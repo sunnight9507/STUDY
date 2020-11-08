@@ -28,15 +28,18 @@ def naver_movie_user_rating_scraping():
 
     resp = download(url,)
     dom = BeautifulSoup(resp.text, 'lxml')
-    text = dom.find('table', class_ = 'list_netizen')
-    text = text.select_one('tbody').text
+    text = dom.find('tbody')
+    text = text.find_all('tr')
 
+    for _ in range(1):
+        num = text[_].select_one('td.ac.num').text
+        title = text[_].select_one('a.movie').text
+        rating = text[_].select_one('em').text
+        _text = text[_].select_one('td > br').next_sibling.strip()
+        user_id = text[_].select_one('a.author').text
+        date = text[_].select_one('td.num > br').next_sibling
 
-
-    # print(text.split('\n'))
-    # print(re.split('\n | \t', text))
-    print(text.replace('\n',' ').replace('\t',''))
-    # print(len(text))
+        print(num, title, rating, _text, user_id, date)
 
     print('end')
 
